@@ -5,7 +5,7 @@ import { connect } from "react-redux"
 import React from "react"
 import ReactDOM from "react-dom"
 
-function CoinItem({ value, quantity, coins, addCoin, isEmpty, setCoins }) {
+function CoinItem({ value, quantity, coins, addCoin, isEmpty, setCoins, pushCoinPosition, disableDrag }) {
 
     function onDragStart(e) {
         console.log("Started dragging!")
@@ -15,24 +15,18 @@ function CoinItem({ value, quantity, coins, addCoin, isEmpty, setCoins }) {
 
     }
 
-    function El() {
-        return (
-            <div className="absolute bottom-0 left-10">
-                <img src={CoinImage} className="w-16 h-16 top-0 left-0 pointer-events-none" draggable="false" />
-            </div>
-        )
-    }
     function onDragStop(e) {
         console.log("Stopped dragging!")
 
         const rect = document.getElementById("drop-target").getBoundingClientRect()
-        console.log(e.clientX, e.clientY)
-        console.log(rect.x, rect.y)
+        
         if (e.clientX >= rect.x && e.clientX <= rect.x + rect.width && e.clientY <= rect.y + rect.height / 2 && e.clientY >= rect.y + rect.height / 2 - 200 && isEmpty()) {
+            let relativeXPos = e.clientX-rect.left-35
 
+            if(relativeXPos < 55) relativeXPos=55
+            if(relativeXPos > 140) relativeXPos=140
             addCoin(value)
-
-            //document.getElementById("drop-target").appendChild(El)
+            pushCoinPosition(value, relativeXPos)
 
         } else {
             //do not update state and revert drag
@@ -55,7 +49,7 @@ function CoinItem({ value, quantity, coins, addCoin, isEmpty, setCoins }) {
                 </div>
 
 
-                <DraggableContainer onStart={onDragStart} onDrag={onDrag} onStop={onDragStop}>
+                <DraggableContainer onStart={onDragStart} onDrag={onDrag} onStop={onDragStop} disabled={disableDrag}>
                     <div className="relative">
                         <img src={CoinImage} className="w-16 h-16 z-0 pointer-events-none" onDrag={e => e.preventDefault()} />
                     </div>

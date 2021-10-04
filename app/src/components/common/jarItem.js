@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import CoinImage from "../../assets/images/coin.svg"
 import { useEffect, useState } from "react"
 
-function JarItem({ type, addCoin, coins, id, results, openModal }) {
+function JarItem({ type, addCoin, coins, id, results, openModal, coinsPos }) {
     const width = type == "sm" ? "w-40" : "w-64"
     const [closed, setClosed] = useState(false)
     const [coinsItems, setCoinsItem] = useState([])
@@ -20,6 +20,10 @@ function JarItem({ type, addCoin, coins, id, results, openModal }) {
 
     }, [coins])
 
+    useEffect(()=>{
+        console.log(coinsItems)
+    }, [coinsItems])
+
 
 
     useEffect(() => {
@@ -30,56 +34,29 @@ function JarItem({ type, addCoin, coins, id, results, openModal }) {
         }
     }, [results])
 
-    const onDragOver = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        //console.log(e)
-    }
-
-    const onDrop = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        //console.log(e)
-
-    }
-
     const handleClick = () => {
 
         closed && openModal(id)
     }
 
-    function CoinImg({left}) {
+    function CoinImg({left, index}) {
+        const classname = coinsPos.length==index+1 ? "jar-coin-item" : ""
         return (
-            <div className="absolute bottom-0" style={{ left: left ? left : 50}}>
+            <div className={"absolute bottom-2 "+classname} style={{ left: left ? left : 50}}>
                 <img src={CoinImage} className="w-16 h-16 top-0 left-0 pointer-events-none" draggable="false" />
             </div>
         )
     }
 
-    const coinList = []
-
-    coins?.map((coin, index) => {
-        let coinsCollection = []
-        if (type !== "sm") {
-            for (let i = 0; i < coin.quantity; i++) {
-                coinsCollection.push(<CoinImg left={coinsItems[i*(index+1)]}/>)
-            }
-        }
-        const collection = (
-            <>
-                {[...coinsCollection]}
-            </>
-        )
-        coinList.push(collection)
-    })
-
 
     return (
-        <div className="flex flex-col items-center">
-            <div onDragOver={onDragOver} id={type !== "sm" && "drop-target"} onDrop={onDrop} className="relative">
-                <img src={closed ? ClosedJarIcon : JarIcon} className={width} />
-                {coinList.map(el => {
-                    return el
+        <div className="flex flex-col items-center" >
+            <div id={type !== "sm" && "drop-target"} className="relative">
+                <img src={closed ? ClosedJarIcon : JarIcon} className={width} draggable="false"/>
+                {coinsPos?.map((pos, index) => {
+                    return (
+                        <CoinImg left={pos.left} index={index}/>
+                    )
                 })}
 
             </div>

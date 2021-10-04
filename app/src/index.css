@@ -14,3 +14,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.jar-coin-item{
+  animation: slideDown ease-in 500ms forwards;
+}
+
+@keyframes slideDown {
+  from{
+    transform: translateY(-200px);
+  }
+  to{
+    transform: translateY(0px);
+  }
+}

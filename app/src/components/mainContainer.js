@@ -6,8 +6,9 @@ import { connect } from "react-redux"
 import { useEffect, useState } from "react"
 import ModalWindow from "./common/modalWindow";
 import JarContent from "./jarContent";
-import ReviewAfterSubmitContent
- from "./reviewAfterSubmitContent";
+import ReviewAfterSubmitContent from "./reviewAfterSubmitContent";
+//import CoinList from "./common/coinList";
+
 const initCoinState = [
     { value: 0.20, quantity: 0 },
     { value: 0.10, quantity: 0 },
@@ -20,11 +21,7 @@ const answerValue = 0.56
 function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpenModal, modalOpen}) {
     const [coins, setCoins] = useState(initCoinState)
     const [totalValue, totalQuantity] = getValueAndQuantity()
-    //const [modalOpen, setModalOpen] = useState({})
-
-    useEffect(()=> {
-        console.log(modalOpen?.type==="check")
-    }, [modalOpen])
+    const [coinsPos, setCoinsPos] = useState([])
 
     function CoinList({ coins, addCoin, isEmpty }) {
         return (
@@ -32,7 +29,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
                 {
                     coins?.map((coin, index) => {
                         return (
-                            <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} isEmpty={isEmpty} coins={coins} setCoins={setCoins}/>
+                            <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} isEmpty={isEmpty} coins={coins} setCoins={setCoins} pushCoinPosition={pushCoinPosition}/>
                         )
                     })
                 }
@@ -41,6 +38,15 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         )
     }
 
+    //function for pushing a new coin position to state to display new coins inside the jar
+    function pushCoinPosition(val, relativeXPos){
+        let temp = coinsPos
+        const left = Math.random()*100+50
+        temp.push({left: relativeXPos, val})
+        setCoinsPos([...temp])
+    }
+
+    //function that gets the total value of all coins and total quantity of all coins in the jar
     function getValueAndQuantity() {
         let totValue = 0
         let totQuantity = 0
@@ -51,6 +57,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         return [totValue, totQuantity]
     }
 
+    //function for saving an answer into redux results state
     function saveAnswer() {
         //console.log(coins)
 
@@ -67,6 +74,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         clearJar()
     }
 
+    //checks if you can save any more answers
     function isEmpty() {
         let i = 0
         results.map(res => {
@@ -77,6 +85,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         return i>0
     }
 
+    //adds a new coin into coins state after dropping a coin inside the jar
     function addCoin(value) {
         const newState = coins
         const i = newState.findIndex(coin => coin.value == value)
@@ -84,20 +93,22 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         setCoins([...newState])
     }
 
+    //function for clearing the jar
     function clearJar() {
-        //console.log("Clearing state")
-
+        //set coins to the initial state
         setCoins(
             [{ value: 0.20, quantity: 0 },
             { value: 0.10, quantity: 0 },
             { value: 0.05, quantity: 0 },
             { value: 0.01, quantity: 0 }]
         )
+        //clearing the positions of coins in the jar container (visual)
+        setCoinsPos([])
     }
 
+    //function for opening the modal to double check your answer
     function openModal(index) {
         console.log("Opening modal")
-        //setModalOpen({ id: index, type: "check" })
         setOpenModal({ id: index, type: "check" })
     }
 
@@ -105,10 +116,10 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         <div className="w-full h-full relative flex flex-col pt-4 pb-10">
             <Header>Make 3 different combinations to get {answerValue}$</Header>
             <div className="flex flex-row w-full h-full relative px-10 py-8">
-                <CoinList coins={coins} addCoin={addCoin} isEmpty={isEmpty}/>
+                <CoinList coins={coins} addCoin={addCoin} isEmpty={isEmpty} setCoins={setCoins} pushCoinPosition={pushCoinPosition} style="flex flex-col justify-between w-2/12 items-center"/>
 
                 <div className="flex flex-col items-center">
-                    <JarItem addCoin={addCoin} coins={coins} />
+                    <JarItem addCoin={addCoin} coins={coins} coinsPos={coinsPos}/>
 
                     <div style={{ visibility: totalQuantity > 0 ? "visible" : "hidden" }}>
                         <div className="py-3 mt-3">

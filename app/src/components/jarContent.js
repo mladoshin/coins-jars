@@ -9,7 +9,7 @@ function CoinList({ coins, addCoin }) {
             {
                 coins?.map((coin, index) => {
                     return (
-                        <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} />
+                        <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} disableDrag={true}/>
                     )
                 })
             }
