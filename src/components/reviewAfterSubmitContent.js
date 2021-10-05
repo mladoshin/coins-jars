@@ -15,12 +15,12 @@ function ReviewAfterSubmitContent({ results, answerValue, setResults, setCurrent
             <div className="flex flex-row justify-between w-full mb-5">
                 {results?.map(res => {
                     const correct = res?.totalValue == answerValue ? true : false
-
+                    const isFilled = res?.totalValue ? true : false
                     const style = correct ? "bg-green-300 bg-opacity-75" : "bg-red-300 bg-opacity-75"
 
                     return (
                         <div className={"border-2 border-gray-300 rounded-lg shadow-lg p-10 " + style}>
-                            <JarItem />
+                            <JarItem isFilled={isFilled}/>
                         </div>
                     )
                 })}

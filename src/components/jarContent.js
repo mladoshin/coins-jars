@@ -5,11 +5,13 @@ import Button from "./common/button"
 function CoinList({ coins, addCoin }) {
     //console.log(coins)
     return (
-        <div className="flex flex-row w-10/12 justify-between mx-auto py-8">
+        <div className="flex flex-row w-10/12 justify-between mx-auto py-8 items-center">
             {
                 coins?.map((coin, index) => {
                     return (
-                        <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} disableDrag={true}/>
+                        <div>
+                            <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} disableDrag={true}/>
+                        </div>
                     )
                 })
             }
