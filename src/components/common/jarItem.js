@@ -59,10 +59,11 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled }) {
         closed && openModal(id)
     }
 
-    function CoinImg({ left, index, val }) {
+    function CoinImg({ left, index, val, top }) {
         const classname = coinsPos.length == index + 1 && flag ? "jar-coin-item" : ""
         const [image, setImage] = useState()
 
+        
         useEffect(() => {
             switch (val) {
                 case 0.20:
@@ -84,7 +85,7 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled }) {
         }, [])
 
         return (
-            <div className={"absolute bottom-4 " + classname} style={{ left: left ? left : 50 }}>
+            <div className={"absolute bottom-4 " + classname} style={{ left: left, bottom: 20 }}>
                 <img src={image} className="top-0 left-0 pointer-events-none" draggable="false" />
             </div>
         )
@@ -97,7 +98,7 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled }) {
                 <img src={jarImage} className={width} draggable="false" id={type !== "sm" && "drop-target"} />
                 {coinsPos?.map((pos, index) => {
                     return (
-                        <CoinImg left={pos.left} index={index} val={pos.val} />
+                        <CoinImg left={pos.left} index={index} val={pos.val} top={pos.top}/>
                     )
                 })}
 

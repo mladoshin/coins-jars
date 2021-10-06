@@ -17,11 +17,22 @@ code {
 
 .jar-coin-item{
   animation: slideDown ease-in 500ms forwards;
+  bottom: 20px;
+  transition: top 500ms ease-in;
 }
 
 @keyframes slideDown {
   from{
     transform: translateY(-200px);
+  }
+  to{
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slideDownTop {
+  from{
+    top: translateY(-200px);
   }
   to{
     transform: translateY(0px);

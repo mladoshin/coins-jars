@@ -39,10 +39,9 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
     }
 
     //function for pushing a new coin position to state to display new coins inside the jar
-    function pushCoinPosition(val, relativeXPos){
+    function pushCoinPosition(val, relativeXPos, relativeYPos){
         let temp = coinsPos
-        const left = Math.random()*100+50
-        temp.push({left: relativeXPos, val})
+        temp.push({left: relativeXPos, val, top: relativeYPos})
         setCoinsPos([...temp])
     }
 
@@ -64,7 +63,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
         if (currentJar.index >= 0 && isEmpty()) {
             const currentResults = results
             const copyCoins = [...coins]
-            currentResults[currentJar.index] = { ...copyCoins, totalValue, totalQuantity }
+            currentResults[currentJar.index] = { ...copyCoins, totalValue, totalQuantity, coinsPos: [...coinsPos] }
             setResults([...currentResults])
 
             setCurrentJar({ index: currentJar.index - 1 })
@@ -144,7 +143,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
             </div>
 
             <ModalWindow open={modalOpen?.type==="check" ? true : false} setOpen={setOpenModal} maxWidth="sm:max-w-lg">
-                <JarContent jarId={modalOpen?.id} setCoins={setCoins} setOpen={setOpenModal} />
+                <JarContent jarId={modalOpen?.id} setCoins={setCoins} setOpen={setOpenModal} setCoinsPos={setCoinsPos}/>
             </ModalWindow>
 
             <ModalWindow open={modalOpen?.type==="review" ? true : false} setOpen={setOpenModal} maxWidth="sm:max-w-6xl">

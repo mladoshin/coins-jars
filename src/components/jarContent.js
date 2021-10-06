@@ -20,11 +20,13 @@ function CoinList({ coins, addCoin }) {
     )
 }
 
-function JarContent({results, jarId, setCurrentJar, setCoins, setResults, setOpen}) {
+function JarContent({results, jarId, setCurrentJar, setCoins, setResults, setOpen, setCoinsPos}) {
     const res = jarId>=0 ? Object.values(results[jarId]) : null
+
     const coins = []
     res?.map(r => {
-        if (typeof r == "object"){
+        console.log(r)
+        if (typeof r == "object" && r.quantity+1){
             coins.push(r)
         }
     })
@@ -35,6 +37,9 @@ function JarContent({results, jarId, setCurrentJar, setCoins, setResults, setOpe
         setCurrentJar({index: jarId})
         setCoins(coins)
 
+        //copy coin position
+        setCoinsPos(results[jarId]?.coinsPos)
+        
         const results_copy = [...results]
         results_copy[jarId] = {}
         setResults([...results_copy])
