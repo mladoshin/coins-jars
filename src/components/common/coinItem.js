@@ -76,6 +76,8 @@ function CoinItem({ value, quantity, coins, addCoin, isEmpty, setCoins, pushCoin
 
     }
 
+    const spanStyle = quantity > 0 ? "bg-blue-400" : "bg-blue-200"
+
     return (
         <>
 
@@ -95,7 +97,7 @@ function CoinItem({ value, quantity, coins, addCoin, isEmpty, setCoins, pushCoin
                     </div>
                 </DraggableContainer>
 
-                <span className="absolute bg-blue-300 rounded-full w-8 h-8 text-center" style={{ bottom: -8, right: -10 }}>
+                <span className={"absolute rounded-full w-8 h-8 text-center py-1 "+spanStyle} style={{ bottom: -8, right: -10 }}>
                     <h1 className="text-white">x{quantity}</h1>
                 </span>
 

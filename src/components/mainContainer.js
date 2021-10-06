@@ -18,18 +18,18 @@ const initCoinState = [
 
 const answerValue = 0.56
 
-function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpenModal, modalOpen}) {
+function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpenModal, modalOpen }) {
     const [coins, setCoins] = useState(initCoinState)
     const [totalValue, totalQuantity] = getValueAndQuantity()
     const [coinsPos, setCoinsPos] = useState([])
 
     function CoinList({ coins, addCoin, isEmpty }) {
         return (
-            <div className="flex flex-col justify-between w-2/12 items-center">
+            <div className="flex md:flex-col justify-between md:w-2/12 items-end flex-row md:items-center">
                 {
                     coins?.map((coin, index) => {
                         return (
-                            <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} isEmpty={isEmpty} coins={coins} setCoins={setCoins} pushCoinPosition={pushCoinPosition}/>
+                            <CoinItem key={index} value={coin.value} quantity={coin.quantity} addCoin={addCoin} isEmpty={isEmpty} coins={coins} setCoins={setCoins} pushCoinPosition={pushCoinPosition} />
                         )
                     })
                 }
@@ -39,9 +39,9 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
     }
 
     //function for pushing a new coin position to state to display new coins inside the jar
-    function pushCoinPosition(val, relativeXPos, relativeYPos){
+    function pushCoinPosition(val, relativeXPos, relativeYPos) {
         let temp = coinsPos
-        temp.push({left: relativeXPos, val, top: relativeYPos})
+        temp.push({ left: relativeXPos, val, top: relativeYPos })
         setCoinsPos([...temp])
     }
 
@@ -81,7 +81,7 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
                 i++
             }
         })
-        return i>0
+        return i > 0
     }
 
     //adds a new coin into coins state after dropping a coin inside the jar
@@ -114,42 +114,43 @@ function MainContainer({ results, setResults, currentJar, setCurrentJar, setOpen
     return (
         <div className="w-full h-full relative flex flex-col pt-4 pb-10">
             <Header>Make 3 different combinations to get {answerValue}$</Header>
-            <div className="flex flex-row w-full h-full relative px-10 py-8">
-                <CoinList coins={coins} addCoin={addCoin} isEmpty={isEmpty} setCoins={setCoins} pushCoinPosition={pushCoinPosition} style="flex flex-col justify-between w-2/12 items-center"/>
+            <div className="flex flex-col w-full h-full relative md:px-10 py-8 md:flex-row px-4">
+                <CoinList coins={coins} addCoin={addCoin} isEmpty={isEmpty} setCoins={setCoins} pushCoinPosition={pushCoinPosition} style="flex flex-col justify-between w-2/12 items-center" />
 
-                <div className="flex flex-col items-center">
-                    <JarItem addCoin={addCoin} coins={coins} coinsPos={coinsPos}/>
+                {/* <div className="flex-row flex-nowrap"> */}
+                    <div className="flex md:flex-col items-center sm:flex-row">
+                        <JarItem addCoin={addCoin} coins={coins} coinsPos={coinsPos} />
 
-                    <div style={{ visibility: totalQuantity > 0 ? "visible" : "hidden" }}>
-                        <div className="py-3 mt-3">
-                            <Button onClick={clearJar}>Clear</Button>
+                        <div style={{ visibility: totalQuantity > 0 ? "visible" : "hidden" }}>
+                            <div className="py-3 mt-3">
+                                <Button onClick={clearJar}>Clear</Button>
+                            </div>
+
+                            <div className="py-3">
+                                <Button onClick={saveAnswer}>Done</Button>
+                            </div>
                         </div>
 
-                        <div className="py-3">
-                            <Button onClick={saveAnswer}>Done</Button>
-                        </div>
+
                     </div>
 
+                    <div className="flex flex-row items-center md:w-5/12 mx-auto w-full justify-center">
+                        <JarItem type="sm" id={0} coins={coins} openModal={openModal} />
+                        <JarItem type="sm" id={1} coins={coins} openModal={openModal} />
+                        <JarItem type="sm" id={2} coins={coins} openModal={openModal} />
+                    </div>
+                {/* </div> */}
 
-                </div>
-
-
-
-                <div className="flex flex-row items-center w-5/12 mx-auto">
-                    <JarItem type="sm" id={0} coins={coins} openModal={openModal} />
-                    <JarItem type="sm" id={1} coins={coins} openModal={openModal} />
-                    <JarItem type="sm" id={2} coins={coins} openModal={openModal} />
-                </div>
             </div>
 
-            <ModalWindow open={modalOpen?.type==="check" ? true : false} setOpen={setOpenModal} maxWidth="sm:max-w-lg">
-                <JarContent jarId={modalOpen?.id} setCoins={setCoins} setOpen={setOpenModal} setCoinsPos={setCoinsPos}/>
+            <ModalWindow open={modalOpen?.type === "check" ? true : false} setOpen={setOpenModal} maxWidth="sm:max-w-lg">
+                <JarContent jarId={modalOpen?.id} setCoins={setCoins} setOpen={setOpenModal} setCoinsPos={setCoinsPos} />
             </ModalWindow>
 
-            <ModalWindow open={modalOpen?.type==="review" ? true : false} setOpen={setOpenModal} maxWidth="sm:max-w-6xl">
-                <ReviewAfterSubmitContent answerValue={answerValue}/>
+            <ModalWindow open={modalOpen?.type === "review" ? true : false} setOpen={setOpenModal} maxWidth="sm:max-w-6xl">
+                <ReviewAfterSubmitContent answerValue={answerValue} />
             </ModalWindow>
-            
+
 
         </div>
 
@@ -169,7 +170,7 @@ const mapDispatchToProps = dispatch => {
         setResults: (val) => dispatch({ type: "SET_RESULTS", payload: val }),
         setCurrentJar: (val) => dispatch({ type: "SET_CURRENT_JAR", payload: val }),
         setOpenModal: (val) => dispatch({ type: "OPEN", payload: val }),
-        
+
     }
 }
 

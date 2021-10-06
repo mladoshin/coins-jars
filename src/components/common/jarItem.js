@@ -11,7 +11,7 @@ import CoinImage2 from "../../assets/images/coin-2.svg"
 import CoinImage3 from "../../assets/images/coin-3.svg"
 import CoinImage4 from "../../assets/images/coin-4.svg"
 
-function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled }) {
+function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled, controls }) {
     const width = type == "sm" ? "w-40" : "w-64"
     const [closed, setClosed] = useState(false)
     const [coinsItems, setCoinsItem] = useState([])
@@ -63,7 +63,7 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled }) {
         const classname = coinsPos.length == index + 1 && flag ? "jar-coin-item" : ""
         const [image, setImage] = useState()
 
-        
+
         useEffect(() => {
             switch (val) {
                 case 0.20:
@@ -98,15 +98,18 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled }) {
                 <img src={jarImage} className={width} draggable="false" id={type !== "sm" && "drop-target"} />
                 {coinsPos?.map((pos, index) => {
                     return (
-                        <CoinImg left={pos.left} index={index} val={pos.val} top={pos.top}/>
+                        <CoinImg left={pos.left} index={index} val={pos.val} top={pos.top} />
                     )
                 })}
 
             </div>
 
-            <div className="mt-4" style={{ visibility: type == "sm" && closed ? "visible" : "hidden" }}>
-                <a className="underline text-blue-500 font-bold cursor-pointer" onClick={handleClick}>Double check</a>
-            </div>
+            {controls !== false &&
+                <div className="mt-4 px-4 text-center" style={{ visibility: type == "sm" && closed ? "visible" : "hidden" }}>
+                    <a className="underline text-blue-500 font-bold cursor-pointer" onClick={handleClick}>Double check</a>
+                </div>
+            }
+
 
         </div>
     )

@@ -19,8 +19,8 @@ function ReviewAfterSubmitContent({ results, answerValue, setResults, setCurrent
                     const style = correct ? "bg-green-300 bg-opacity-75" : "bg-red-300 bg-opacity-75"
 
                     return (
-                        <div className={"border-2 border-gray-300 rounded-lg shadow-lg p-10 " + style}>
-                            <JarItem isFilled={isFilled}/>
+                        <div className={"border-2 border-gray-300 rounded-lg shadow-lg p-2 md:p-8 " + style}>
+                            <JarItem isFilled={isFilled} controls={false}/>
                         </div>
                     )
                 })}

@@ -10,8 +10,8 @@ function App({setOpenModal}) {
 
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full absolute">
-      <div className="w-8/12 h-auto bg-white rounded-xl border-blue-300 border-2 shadow-xl">
+    <div className="flex flex-col items-center justify-center w-full absolute">
+      <div className="bg-white rounded-xl border-blue-300 border-2 shadow-xl md:max-w-7xl h-auto w-full">
         <MainContainer/>
       </div>
       <div className="pt-8">
