@@ -4,7 +4,7 @@ import JarSMIcon from "../../assets/images/jar-sm.svg"
 import { connect } from "react-redux"
 import CoinImage from "../../assets/images/coin.svg"
 import { useEffect, useState } from "react"
-
+import { motion, useMotionValue  } from "framer-motion";
 
 import CoinImage1 from "../../assets/images/coin-1.svg"
 import CoinImage2 from "../../assets/images/coin-2.svg"
@@ -60,8 +60,13 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled, cont
     }
 
     function CoinImg({ left, index, val, top }) {
-        const classname = coinsPos.length == index + 1 && flag ? "jar-coin-item" : ""
+        // const classname = coinsPos.length == index + 1 && flag ? "jar-coin-item" : ""
         const [image, setImage] = useState()
+        const dropTarget = document.getElementById("drop-target").getBoundingClientRect()
+        // const el = document.getElementById("coinItem-"+index).getBoundingClientRect()
+
+        const animation = coinsPos.length == index + 1 && flag ? {bottom: 20, animationFillMode: "forwards"} : {}
+        const initial = coinsPos.length == index + 1 && flag ? {bottom: dropTarget.height-Math.abs(top)-55} : {}
 
 
         useEffect(() => {
@@ -85,9 +90,9 @@ function JarItem({ type, coins, id, results, openModal, coinsPos, isFilled, cont
         }, [])
 
         return (
-            <div className={"absolute bottom-4 " + classname} style={{ left: left, bottom: 20 }}>
+            <motion.div className={"absolute coinItem"} style={{ left: left, bottom: 20 }} id={"coinItem-"+index} initial={initial} animate={animation} transition={{duration: 0.5}} >
                 <img src={image} className="top-0 left-0 pointer-events-none" draggable="false" />
-            </div>
+            </motion.div>
         )
     }
 

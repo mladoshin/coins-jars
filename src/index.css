@@ -39,3 +39,7 @@ code {
     transform: translateY(0px);
   }
 }
+
+.coinItem{
+  transition: all 500ms ease-in;
+}
